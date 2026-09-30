@@ -1,0 +1,40 @@
+{
+  "name": "dsh-chernobyl-blue-local",
+  "version": "1.0.1",
+  "description": "Chernobyl Blue palette and glow for DeepSeek Harness Desktop",
+  "type": "module",
+  "main": "./index.js",
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js"
+  },
+  "files": [
+    "index.js",
+    "client.js",
+    "cordis.patch.yml",
+    "README.md",
+    "LICENSE"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-theme"
+      ],
+      "platform": "web"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sadsheep611/deepseek-harness-chernobyl-blue.git"
+  },
+  "keywords": [
+    "deepseek-harness",
+    "dsh-plugin",
+    "theme",
+    "chernobyl-blue"
+  ],
+  "license": "MIT"
+}
