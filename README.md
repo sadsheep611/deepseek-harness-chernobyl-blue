@@ -4,26 +4,24 @@
 
 这是社区适配插件，与 DeepSeek AI、Typora 主题原作者均无官方关联。已在 DeepSeek Harness Desktop `0.2.0-rc.2` 测试。
 
-## 安装
+## 桌面端安装
 
-1. 完全退出 DeepSeek Harness。
-2. 在可用的 `dsh` 终端运行：
+1. 打开 DeepSeek Harness 桌面应用。
+2. 在左侧导航栏打开“插件”（Plugins）页面，点击“添加插件”（Add plugin）。
+3. 在插件来源输入框中粘贴下面这一行，然后点击安装：
 
-   ```powershell
-   dsh plugin --profile desktop add github:sadsheep611/deepseek-harness-chernobyl-blue#v1.0.1
+   ```text
+   github:sadsheep611/deepseek-harness-chernobyl-blue#v1.0.1
    ```
 
-   如果 Windows 终端找不到 `dsh`，可使用桌面应用安装目录内的 `resources\runtime\cli\bin\dsh.cmd`，例如：
+4. 安装完成后点击“立即启用”（Enable now）。如果页面提示重启应用，请按提示重启。
+5. 切换到深色主题查看蓝色光晕。
 
-   ```powershell
-   & "<安装目录>\resources\runtime\cli\bin\dsh.cmd" plugin --profile desktop add github:sadsheep611/deepseek-harness-chernobyl-blue#v1.0.1
-   ```
-
-3. 重新打开应用，选择深色主题查看蓝色光晕。
+桌面端插件页会调用应用自带的安装器，不需要另外安装 Node.js、pnpm 或命令行工具。
 
 ## 卸载
 
-完全退出应用，运行 `dsh plugin --profile desktop remove dsh-chernobyl-blue-local`，然后重新打开。若 `dsh` 不在 PATH 中，请按上面的方式改用应用自带的 `dsh.cmd`。
+在左侧“插件”（Plugins）页面的“已安装”（Installed）列表中找到 Chernobyl Blue，选择卸载并确认；若页面要求重启，请重启应用。
 
 ## 出处与许可
 
