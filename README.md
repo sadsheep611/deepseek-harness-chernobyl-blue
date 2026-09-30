@@ -1,6 +1,6 @@
 # Chernobyl Blue for DeepSeek Harness
 
-将 Typora 的 Chernobyl Blue 配色改编为 DeepSeek Harness 桌面版主题。浅色和深色模式均带有蓝色光晕，始终跟随并水平居中于聊天输入框下方。光晕层不会挡住鼠标操作。
+将 Typora 的 Chernobyl Blue 配色改编为 DeepSeek Harness 桌面版主题。浅色和深色模式均带有蓝色光晕，始终跟随并水平居中于聊天输入框下方。光晕层不会挡住鼠标操作。权限、模型和其他共用菜单支持半透明毛玻璃：背景模糊，菜单文字保持清晰；浅色和深色模式均适用。
 
 这是社区适配插件，与 DeepSeek AI、Typora 主题原作者均无官方关联。已在 DeepSeek Harness Desktop `0.2.0-rc.2` 测试。
 
@@ -11,7 +11,7 @@
 3. 在插件来源输入框中粘贴下面这一行，然后点击安装：
 
    ```text
-   github:sadsheep611/deepseek-harness-chernobyl-blue#v1.0.4
+   github:sadsheep611/deepseek-harness-chernobyl-blue#v1.0.5
    ```
 
 4. 安装完成后点击“立即启用”（Enable now）。如果页面提示重启应用，请按提示重启。
