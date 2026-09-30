@@ -1,7 +1,7 @@
 {
   "name": "dsh-chernobyl-blue-local",
-  "version": "1.0.3",
-  "description": "DeepSeek Harness 桌面主题，采用 Chernobyl Blue 蓝色配色，浅色模式采用清晰的蓝色调与柔和光晕，深色模式保留蓝色氛围光。",
+  "version": "1.0.4",
+  "description": "DeepSeek Harness 桌面主题，采用 Chernobyl Blue 蓝色配色，浅色与深色模式均带有稳定居中于聊天输入框下方的蓝色光晕。",
   "type": "module",
   "main": "./index.js",
   "exports": {

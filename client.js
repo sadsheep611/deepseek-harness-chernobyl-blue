@@ -43,14 +43,6 @@ window.__ModuleLoader__.load({
         const style = document.createElement("style");
         style.id = "dsh-chernobyl-blue-local-style";
         style.textContent = [
-          "body[data-ds-dark-theme] {",
-          "  background-image: radial-gradient(circle at 50% 110%, #2a3139 0%, #15171a 58%, #101113 100%);",
-          "  background-attachment: fixed;",
-          "}",
-          "body:not([data-ds-dark-theme]) {",
-          "  background-image: radial-gradient(circle at 70% 112%, #cfe2fb 0%, #eaf2fc 48%, #f6f9ff 100%);",
-          "  background-attachment: fixed;",
-          "}",
           "body[data-ds-dark-theme] ::selection {",
           "  background: #4a89dc;",
           "  color: #ffffff;",
@@ -58,7 +50,8 @@ window.__ModuleLoader__.load({
         ].join("\n");
         document.head.appendChild(style);
         return () => style.remove();
-      }, "chernobyl-blue: atmospheric background");
+      }, "chernobyl-blue: selection color");
+
       ctx.effect(() => {
         const glow = document.createElement("div");
         glow.id = "dsh-chernobyl-blue-glow";
@@ -70,34 +63,112 @@ window.__ModuleLoader__.load({
           "#dsh-chernobyl-blue-glow {",
           "  display: none;",
           "  position: fixed;",
-          "  inset: 0;",
+          "  left: 50%;",
+          "  top: 70vh;",
+          "  width: min(900px, 96vw);",
+          "  height: 240px;",
+          "  transform: translateX(-50%);",
           "  z-index: 2147483000;",
           "  pointer-events: none;",
           "  user-select: none;",
-          "  background:",
-          "    radial-gradient(ellipse 58% 56% at 70% 116%, rgba(74, 137, 220, 0.20), transparent 72%),",
-          "    radial-gradient(ellipse 54% 42% at 46% 108%, rgba(74, 137, 220, 0.10), transparent 82%);",
+          "  background: radial-gradient(ellipse 70% 92% at 50% 42%, rgba(74, 137, 220, 0.22), transparent 74%);",
           "  mix-blend-mode: screen;",
           "}",
+          "body[data-ds-dark-theme] > #dsh-chernobyl-blue-glow,",
           "body:not([data-ds-dark-theme]) > #dsh-chernobyl-blue-glow {",
           "  display: block;",
-          "  background:",
-          "    radial-gradient(ellipse 60% 54% at 72% 112%, rgba(69, 134, 220, 0.24), transparent 72%),",
-          "    radial-gradient(ellipse 56% 42% at 44% 108%, rgba(96, 157, 232, 0.16), transparent 82%);",
-          "  mix-blend-mode: multiply;",
           "}",
-          "body[data-ds-dark-theme] > #dsh-chernobyl-blue-glow {",
-          "  display: block;",
+          "body:not([data-ds-dark-theme]) > #dsh-chernobyl-blue-glow {",
+          "  background: radial-gradient(ellipse 72% 94% at 50% 42%, rgba(69, 134, 220, 0.24), transparent 74%);",
+          "  mix-blend-mode: multiply;",
           "}"
         ].join("\n");
 
         document.head.appendChild(glowStyle);
         document.body.appendChild(glow);
+
+        let trackedTarget = null;
+        let resizeObserver = null;
+        let animationFrame = 0;
+
+        const findComposer = () => {
+          const candidates = Array.from(document.querySelectorAll('textarea, [contenteditable="true"], [role="textbox"]'));
+          const visible = candidates.map((element) => {
+            const rect = element.getBoundingClientRect();
+            const style = getComputedStyle(element);
+            return { element, rect, style };
+          }).filter(({ rect, style }) =>
+            rect.width >= Math.min(320, window.innerWidth * 0.34) &&
+            rect.height >= 18 && rect.bottom > window.innerHeight * 0.55 &&
+            style.display !== "none" && style.visibility !== "hidden" &&
+            Number(style.opacity || 1) > 0
+          );
+
+          const boxes = visible.map(({ element, rect }) => {
+            let target = element;
+            let bounds = rect;
+            let parent = element.parentElement;
+            for (let depth = 0; parent && depth < 7; depth += 1, parent = parent.parentElement) {
+              const parentRect = parent.getBoundingClientRect();
+              if (parentRect.width >= Math.max(rect.width + 48, 520) &&
+                  parentRect.width <= window.innerWidth * 0.94 &&
+                  parentRect.height >= 64 && parentRect.height <= 300 &&
+                  parentRect.bottom > window.innerHeight * 0.55) {
+                target = parent;
+                bounds = parentRect;
+                break;
+              }
+            }
+            return { target, bounds };
+          });
+
+          boxes.sort((a, b) => b.bounds.bottom - a.bounds.bottom || b.bounds.width - a.bounds.width);
+          return boxes[0] || null;
+        };
+
+        const updatePosition = () => {
+          animationFrame = 0;
+          const composer = findComposer();
+          if (!composer) {
+            glow.style.display = "none";
+            return;
+          }
+
+          glow.style.display = "block";
+          glow.style.left = `${composer.bounds.left + composer.bounds.width / 2}px`;
+          glow.style.top = `${composer.bounds.bottom - 70}px`;
+          glow.style.width = `${Math.min(Math.max(composer.bounds.width * 1.2, 520), window.innerWidth * 0.96)}px`;
+
+          if (composer.target !== trackedTarget) {
+            if (resizeObserver) resizeObserver.disconnect();
+            trackedTarget = composer.target;
+            resizeObserver = new ResizeObserver(() => scheduleUpdate());
+            resizeObserver.observe(trackedTarget);
+          }
+        };
+
+        const scheduleUpdate = () => {
+          if (!animationFrame) animationFrame = requestAnimationFrame(updatePosition);
+        };
+
+        const mutationObserver = new MutationObserver(scheduleUpdate);
+        mutationObserver.observe(document.body, { childList: true, subtree: true });
+        window.addEventListener("resize", scheduleUpdate);
+        window.addEventListener("scroll", scheduleUpdate, true);
+        const refreshTimer = window.setInterval(scheduleUpdate, 1200);
+        scheduleUpdate();
+
         return () => {
+          mutationObserver.disconnect();
+          if (resizeObserver) resizeObserver.disconnect();
+          if (animationFrame) cancelAnimationFrame(animationFrame);
+          window.clearInterval(refreshTimer);
+          window.removeEventListener("resize", scheduleUpdate);
+          window.removeEventListener("scroll", scheduleUpdate, true);
           glow.remove();
           glowStyle.remove();
         };
-      }, "chernobyl-blue: visible glow");
+      }, "chernobyl-blue: composer-anchored glow");
     }
 
     module.exports.apply = apply;
