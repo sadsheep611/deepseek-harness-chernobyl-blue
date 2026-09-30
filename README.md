@@ -11,7 +11,7 @@
 3. 在插件来源输入框中粘贴下面这一行，然后点击安装：
 
    ```text
-   github:sadsheep611/deepseek-harness-chernobyl-blue#v1.0.1
+   github:sadsheep611/deepseek-harness-chernobyl-blue#v1.0.2
    ```
 
 4. 安装完成后点击“立即启用”（Enable now）。如果页面提示重启应用，请按提示重启。
@@ -30,3 +30,4 @@
 - 本仓库是 DeepSeek Harness 的独立适配，使用 MIT 许可，详见 [LICENSE](LICENSE)。没有打包原主题的 CSS 或图片资源。
 
 DeepSeek Harness 仍在开发预览阶段，未来版本可能需要调整插件接口。插件只更改界面外观；系统主题选项仍可使用。
+
